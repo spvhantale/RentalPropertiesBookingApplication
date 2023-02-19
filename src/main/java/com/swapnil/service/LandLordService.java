@@ -11,9 +11,9 @@ import com.swapnil.model.Tenat;
 public interface LandLordService {
 
 	public String registerLandLord(LandLordDTO landLord)throws LandLordException;
-	public String updateLandLord(LandLord landLord)throws LandLordException;
-	public String addProperty(PropertyDTO property)throws PropertyException;
-	public Tenat viewTenat(Integer tenatId,Integer landLordId)throws TenatException;
-	public Tenat viewAllTenat(Integer tenatId)throws TenatException,LandLordException;
+	public String updateLandLord(LandLord landLord,String key)throws LandLordException;
+	public String addProperty(PropertyDTO property,String key)throws PropertyException;
+	public Tenat viewTenat(Integer tenatId,String key)throws TenatException;
+	public Tenat viewAllTenat(String key)throws TenatException,LandLordException;
 	
 }

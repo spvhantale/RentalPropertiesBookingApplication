@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LandLordDTO {
+public class LoginDTO {
 
-	private String firstName;
-	private String lastName;
-	private String adharNo;
 	private String mobileNo;
 	private String password;
-
 }

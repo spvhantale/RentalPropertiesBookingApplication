@@ -24,6 +24,8 @@ public class LandLord {
 	private Integer landLordId;
 	private String firstName;
 	private String lastName;
+	private String mobileNo;
+	private String password;
 	private String adharNo;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Tenat> tenats=new ArrayList<>();

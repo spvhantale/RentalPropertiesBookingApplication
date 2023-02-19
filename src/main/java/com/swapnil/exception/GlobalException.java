@@ -37,6 +37,14 @@ public class GlobalException {
 		return new ResponseEntity<MyError>(myError, HttpStatus.BAD_REQUEST);
 		
 	}
+	@ExceptionHandler(UserSessionException.class)
+	public ResponseEntity<MyError> getUserException(UserSessionException exception,WebRequest req){
+		
+		MyError myError=new MyError(exception.getMessage(), LocalDateTime.now(), req.getDescription(false));
+		
+		return new ResponseEntity<MyError>(myError, HttpStatus.BAD_REQUEST);
+		
+	}
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<MyError> getException(Exception exception,WebRequest req){
 		
