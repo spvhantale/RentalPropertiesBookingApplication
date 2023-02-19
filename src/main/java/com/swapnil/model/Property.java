@@ -25,6 +25,7 @@ public class Property {
 	private Integer bedRoom;
 	private Integer hall;
 	private Integer rent;
+	private boolean availability=false;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Tenat tenat;
 	
