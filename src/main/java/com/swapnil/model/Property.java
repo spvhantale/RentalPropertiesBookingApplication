@@ -28,5 +28,18 @@ public class Property {
 	private boolean availability=true;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Tenat tenat;
+	public Property(String city, String streetNo, String state, Integer bedRoom, Integer hall, Integer rent,
+			boolean availability) {
+		super();
+		this.city = city;
+		this.streetNo = streetNo;
+		this.state = state;
+		this.bedRoom = bedRoom;
+		this.hall = hall;
+		this.rent = rent;
+		this.availability = availability;
+	}
+	
+	
 	
 }

@@ -31,4 +31,15 @@ public class LandLord {
 	private List<Tenat> tenats=new ArrayList<>();
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Property> properties=new ArrayList<>();
+	
+	public LandLord(String firstName, String lastName, String mobileNo, String password, String adharNo) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mobileNo = mobileNo;
+		this.password = password;
+		this.adharNo = adharNo;
+	}
+	
+	
 }
