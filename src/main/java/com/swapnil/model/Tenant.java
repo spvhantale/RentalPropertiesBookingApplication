@@ -1,14 +1,11 @@
 package com.swapnil.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,29 +14,29 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LandLord {
+public class Tenant {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer landLordId;
+	private Integer tenatId;
 	private String firstName;
 	private String lastName;
 	private String mobileNo;
-	private String password;
 	private String adharNo;
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Tenant> tenants=new ArrayList<>();
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Property> properties=new ArrayList<>();
+	private String password;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Property property;
 	
-	public LandLord(String firstName, String lastName, String mobileNo, String password, String adharNo) {
+	public Tenant(String firstName, String lastName, String mobileNo, String adharNo, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.mobileNo = mobileNo;
-		this.password = password;
 		this.adharNo = adharNo;
+		this.password = password;
 	}
+	
+	
 	
 	
 }

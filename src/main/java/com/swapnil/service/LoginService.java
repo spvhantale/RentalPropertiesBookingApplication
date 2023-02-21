@@ -6,5 +6,5 @@ import com.swapnil.exception.UserSessionException;
 public interface LoginService {
 
 	public String loginUser(LoginDTO login)throws UserSessionException;
-	public String logiOut(String key) throws UserSessionException;
+	public String logOut(String key) throws UserSessionException;
 }

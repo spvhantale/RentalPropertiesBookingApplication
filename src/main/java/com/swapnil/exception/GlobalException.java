@@ -13,8 +13,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 public class GlobalException {
 
-	@ExceptionHandler(TenatException.class)
-	public ResponseEntity<MyError> getTenatException(TenatException exception,WebRequest req){
+	@ExceptionHandler(TenantException.class)
+	public ResponseEntity<MyError> getTenantException(TenantException exception,WebRequest req){
 		
 		MyError myError=new MyError(exception.getMessage(), LocalDateTime.now(), req.getDescription(false));
 		

@@ -27,7 +27,7 @@ public class Property {
 	private Integer rent;
 	private boolean availability=true;
 	@OneToOne(cascade = CascadeType.ALL)
-	private Tenat tenat;
+	private Tenant tenant;
 	public Property(String city, String streetNo, String state, Integer bedRoom, Integer hall, Integer rent,
 			boolean availability) {
 		super();

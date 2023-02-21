@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService{
 	}
 
 	@Override
-	public String logiOut(String key) throws UserSessionException {
+	public String logOut(String key) throws UserSessionException {
 		// TODO Auto-generated method stub
 		Optional<CurrentUserSession> curr=userSessionDao.findByUuId(key);
 		

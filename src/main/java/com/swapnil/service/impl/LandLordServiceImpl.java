@@ -10,16 +10,16 @@ import com.swapnil.DTO.LandLordDTO;
 import com.swapnil.DTO.PropertyDTO;
 import com.swapnil.exception.LandLordException;
 import com.swapnil.exception.PropertyException;
-import com.swapnil.exception.TenatException;
+import com.swapnil.exception.TenantException;
 import com.swapnil.exception.UserSessionException;
 import com.swapnil.model.CurrentUserSession;
 import com.swapnil.model.LandLord;
 import com.swapnil.model.Property;
-import com.swapnil.model.Tenat;
+import com.swapnil.model.Tenant;
 import com.swapnil.repository.CurrentUserSessionDAO;
 import com.swapnil.repository.LandLordDAO;
 import com.swapnil.repository.PropertyDAO;
-import com.swapnil.repository.TenatDAO;
+import com.swapnil.repository.TenantDAO;
 import com.swapnil.service.LandLordService;
 
 @Service
@@ -30,7 +30,7 @@ public class LandLordServiceImpl implements LandLordService{
 	@Autowired
 	private PropertyDAO propertyDao;
 	@Autowired
-	private TenatDAO tenatDao;
+	private TenantDAO tenatDao;
 	@Autowired
 	private CurrentUserSessionDAO userSessionDao;
 	
@@ -50,8 +50,8 @@ public class LandLordServiceImpl implements LandLordService{
 		Optional<CurrentUserSession> current=userSessionDao.findByUuId(key);
 		if(current.isPresent()) {
 			if(landLord.getMobileNo().equals(current.get().getMobileNo())) {
-				List<Tenat> tenatList=landLord.getTenats();
-				for(Tenat te:tenatList) {
+				List<Tenant> tenatList=landLord.getTenants();
+				for(Tenant te:tenatList) {
 					tenatDao.save(te);
 				}
 				List<Property> propertyList=landLord.getProperties();
@@ -94,19 +94,19 @@ public class LandLordServiceImpl implements LandLordService{
 	}
 
 	@Override
-	public Tenat viewTenat(Integer tenatId, String key) throws TenatException ,UserSessionException{
+	public Tenant viewTenat(Integer tenatId, String key) throws TenantException ,UserSessionException{
 		
 		Optional<CurrentUserSession> current=userSessionDao.findByUuId(key);
 		if(current.isPresent()) {
 			Optional<LandLord> land=landLordDao.findByMobileNo(current.get().getMobileNo());
 			if(land.isPresent()) {
-				List<Tenat> tenatList=land.get().getTenats();
-				for(Tenat te:tenatList) {
+				List<Tenant> tenatList=land.get().getTenants();
+				for(Tenant te:tenatList) {
 					if(te.getTenatId()==tenatId) {
 						return te;
 					}
 				}
-				throw new TenatException("Tenat not found");
+				throw new TenantException("Tenat not found");
 			}
 			throw new UserSessionException("user not found");
 		}
@@ -116,15 +116,15 @@ public class LandLordServiceImpl implements LandLordService{
 	}
 
 	@Override
-	public List<Tenat> viewAllTenat(String key) throws TenatException, LandLordException,UserSessionException {
+	public List<Tenant> viewAllTenat(String key) throws TenantException, LandLordException,UserSessionException {
 		Optional<CurrentUserSession> current=userSessionDao.findByUuId(key);
 		if(current.isPresent()) {
 			Optional<LandLord> land=landLordDao.findByMobileNo(current.get().getMobileNo());
 			if(land.isPresent()) {
-				List<Tenat> tenatList=land.get().getTenats();
+				List<Tenant> tenatList=land.get().getTenants();
 				return tenatList;
 			}else {
-				throw new TenatException("Tenat not found");
+				throw new TenantException("Tenat not found");
 			}
 		}else {
 			throw new UserSessionException("Login first");
