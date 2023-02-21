@@ -94,7 +94,7 @@ public class LandLordServiceImpl implements LandLordService{
 	}
 
 	@Override
-	public Tenant viewTenat(Integer tenatId, String key) throws TenantException ,UserSessionException{
+	public Tenant viewTenant(Integer tenantId, String key) throws TenantException ,UserSessionException{
 		
 		Optional<CurrentUserSession> current=userSessionDao.findByUuId(key);
 		if(current.isPresent()) {
@@ -102,7 +102,7 @@ public class LandLordServiceImpl implements LandLordService{
 			if(land.isPresent()) {
 				List<Tenant> tenatList=land.get().getTenants();
 				for(Tenant te:tenatList) {
-					if(te.getTenatId()==tenatId) {
+					if(te.getTenatId()==tenantId) {
 						return te;
 					}
 				}
@@ -116,7 +116,7 @@ public class LandLordServiceImpl implements LandLordService{
 	}
 
 	@Override
-	public List<Tenant> viewAllTenat(String key) throws TenantException, LandLordException,UserSessionException {
+	public List<Tenant> viewAllTenant(String key) throws TenantException, LandLordException,UserSessionException {
 		Optional<CurrentUserSession> current=userSessionDao.findByUuId(key);
 		if(current.isPresent()) {
 			Optional<LandLord> land=landLordDao.findByMobileNo(current.get().getMobileNo());

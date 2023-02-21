@@ -16,7 +16,7 @@ public interface LandLordService {
 	public String registerLandLord(LandLordDTO landLord)throws LandLordException;
 	public String updateLandLord(LandLord landLord,String key)throws LandLordException,UserSessionException;
 	public String addProperty(PropertyDTO property,String key)throws PropertyException,UserSessionException,LandLordException;
-	public Tenant viewTenat(Integer tenatId,String key)throws TenantException,UserSessionException;
-	public List<Tenant> viewAllTenat(String key)throws TenantException,LandLordException,UserSessionException;
+	public Tenant viewTenant(Integer tenantId,String key)throws TenantException,UserSessionException;
+	public List<Tenant> viewAllTenant(String key)throws TenantException,LandLordException,UserSessionException;
 	
 }
