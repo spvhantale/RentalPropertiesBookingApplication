@@ -20,7 +20,7 @@ import com.swapnil.exception.TenantException;
 import com.swapnil.exception.UserSessionException;
 import com.swapnil.model.LandLord;
 import com.swapnil.model.Tenant;
-import com.swapnil.service.LandLordService;
+import com.swapnil.service.LandService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
@@ -28,44 +28,44 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 @RequestMapping("/landlord")
 public class LandLordController {
 
-	private LandLordService landLordService;
+	private LandService landService;
 	
-	public LandLordController(LandLordService landLordService) {
+	public LandLordController(LandService landService) {
 		// TODO Auto-generated constructor stub
-		this.landLordService=landLordService;
+		this.landService=landService;
 	}
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> registerLandLord(@RequestBody LandLordDTO landlord) throws LandLordException{
-		String message=landLordService.registerLandLord(landlord);
+		String message=landService.registerLandLord(landlord);
 		
 		return new ResponseEntity<String>(message, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/update")
 	public ResponseEntity<String> updateLandLord(@RequestBody LandLord landlord,@RequestParam String key) throws LandLordException, UserSessionException{
-		String message=landLordService.updateLandLord(landlord,key);
+		String message=landService.updateLandLord(landlord,key);
 		
 		return new ResponseEntity<String>(message, HttpStatus.CREATED);
 	}
 	@PutMapping("/addProperty")
 	public ResponseEntity<String> addProperty(@RequestBody PropertyDTO property,@RequestParam String key) throws PropertyException, UserSessionException, LandLordException{
 		
-		String message=landLordService.addProperty(property, key);
+		String message=landService.addProperty(property, key);
 		
 		return new ResponseEntity<String>(message, HttpStatus.OK);
 	}
 	@GetMapping("/view/{tenantId}")
 	public ResponseEntity<Tenant> viewTenant(@PathVariable("tenantId") Integer tenantId,@RequestParam String key) throws PropertyException, UserSessionException, LandLordException, TenantException{
 		
-		Tenant tenant=landLordService.viewTenant(tenantId, key);
+		Tenant tenant=landService.viewTenant(tenantId, key);
 		
 		return new ResponseEntity<Tenant>(tenant, HttpStatus.OK);
 	}
 	@GetMapping("/viewAll")
 	public ResponseEntity<List<Tenant>> viewAllTenant(@RequestParam String key) throws PropertyException, UserSessionException, LandLordException, TenantException{
 		
-		List<Tenant> tenantList=landLordService.viewAllTenant(key);
+		List<Tenant> tenantList=landService.viewAllTenant(key);
 		
 		return new ResponseEntity<List<Tenant>>(tenantList, HttpStatus.OK);
 	}
