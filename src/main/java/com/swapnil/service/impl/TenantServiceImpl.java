@@ -3,7 +3,6 @@ package com.swapnil.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.swapnil.DTO.TenantDTO;
@@ -22,12 +21,17 @@ import com.swapnil.service.TenantService;
 @Service
 public class TenantServiceImpl implements TenantService{
 
-	@Autowired
 	private TenantDAO tenatDao;
-	@Autowired
 	private PropertyDAO propertyDao;
-	@Autowired
 	private CurrentUserSessionDAO currentUserDao;
+	
+	public TenantServiceImpl(PropertyDAO propertyDao,TenantDAO tenatDao,CurrentUserSessionDAO currentUserDao) {
+		// TODO Auto-generated constructor stub
+		this.propertyDao=propertyDao;
+		this.tenatDao=tenatDao;
+		this.currentUserDao=currentUserDao;
+	}
+	
 	@Override
 	public String registerTenant(TenantDTO tenat) throws TenantException {
 		

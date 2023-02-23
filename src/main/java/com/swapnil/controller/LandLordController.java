@@ -2,7 +2,6 @@ package com.swapnil.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +28,12 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 @RequestMapping("/landlord")
 public class LandLordController {
 
-	@Autowired
 	private LandLordService landLordService;
+	
+	public LandLordController(LandLordService landLordService) {
+		// TODO Auto-generated constructor stub
+		this.landLordService=landLordService;
+	}
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> registerLandLord(@RequestBody LandLordDTO landlord) throws LandLordException{

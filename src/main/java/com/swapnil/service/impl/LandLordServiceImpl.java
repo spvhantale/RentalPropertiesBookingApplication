@@ -3,7 +3,6 @@ package com.swapnil.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.swapnil.DTO.LandLordDTO;
@@ -25,14 +24,20 @@ import com.swapnil.service.LandLordService;
 @Service
 public class LandLordServiceImpl implements LandLordService{
 
-	@Autowired
+
 	private LandLordDAO landLordDao;
-	@Autowired
 	private PropertyDAO propertyDao;
-	@Autowired
 	private TenantDAO tenatDao;
-	@Autowired
 	private CurrentUserSessionDAO userSessionDao;
+	
+	
+	public LandLordServiceImpl(LandLordDAO landLordDao,PropertyDAO propertyDao,TenantDAO tenatDao,CurrentUserSessionDAO userSessionDao) {
+		// TODO Auto-generated constructor stub
+		this.landLordDao=landLordDao;
+		this.propertyDao=propertyDao;
+		this.tenatDao=tenatDao;
+		this.userSessionDao=userSessionDao;
+	}
 	
 	@Override
 	public String registerLandLord(LandLordDTO landLord) throws LandLordException {

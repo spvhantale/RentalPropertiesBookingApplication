@@ -3,7 +3,6 @@ package com.swapnil.service.impl;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.swapnil.DTO.LoginDTO;
@@ -16,9 +15,12 @@ import com.swapnil.service.LoginService;
 @Service
 public class LoginServiceImpl implements LoginService{
 
-	@Autowired
 	private CurrentUserSessionDAO userSessionDao;
 	
+	public LoginServiceImpl(CurrentUserSessionDAO userSessionDao) {
+		// TODO Auto-generated constructor stub
+		this.userSessionDao=userSessionDao;
+	}
 	
 	@Override
 	public String loginUser(LoginDTO login) throws UserSessionException {

@@ -1,5 +1,7 @@
 package com.swapnil.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ public class Tenant {
 	private String mobileNo;
 	private String adharNo;
 	private String password;
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Property property;
 	

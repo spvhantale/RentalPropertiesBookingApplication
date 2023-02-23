@@ -1,6 +1,5 @@
 package com.swapnil.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +17,13 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 @RequestMapping("/log")
 public class LoginController {
 
-	@Autowired
+
 	private LoginService loginService;
+	
+	public LoginController(LoginService loginService) {
+		// TODO Auto-generated constructor stub
+		this.loginService=loginService;
+	}
 	
 	@PostMapping("/In")
 	public ResponseEntity<String> login(@RequestBody LoginDTO login) throws UserSessionException{

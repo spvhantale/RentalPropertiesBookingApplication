@@ -2,7 +2,6 @@ package com.swapnil.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +27,13 @@ import com.swapnil.service.TenantService;
 @RequestMapping("/tenant")
 public class TenantController {
 
-	@Autowired
+	
 	private TenantService tenantService;
+	
+	public TenantController(TenantService tenantService) {
+		// TODO Auto-generated constructor stub
+		this.tenantService=tenantService;
+	}
 	
 	@PostMapping("/register")
 	public ResponseEntity<String> registerTenat(@RequestBody TenantDTO tenat) throws TenantException{
