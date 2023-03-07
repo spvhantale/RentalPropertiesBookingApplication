@@ -8,4 +8,5 @@ import com.swapnil.model.Property;
 @Repository
 public interface PropertyDAO extends JpaRepository<Property, Integer>{
 
+	
 }

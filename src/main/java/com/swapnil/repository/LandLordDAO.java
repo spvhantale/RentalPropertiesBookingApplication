@@ -10,5 +10,5 @@ import com.swapnil.model.LandLord;
 @Repository
 public interface LandLordDAO extends JpaRepository<LandLord, Integer>{
 
-	public Optional<LandLord> findByMobileNo(String mobileNo);
+	public Optional<LandLord> findByMobileNumber(String mobileNumber);
 }

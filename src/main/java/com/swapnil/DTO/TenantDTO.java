@@ -11,8 +11,10 @@ public class TenantDTO {
 
 	private String firstName;
 	private String lastName;
-	private String adharNo;
-	private String mobileNo;
+	private String adharNumber;
+	private String mobileNumber;
 	private String password;
+	private String role;
+	
 
 }

@@ -10,5 +10,5 @@ import com.swapnil.model.Tenant;
 @Repository
 public interface TenantDAO extends JpaRepository<Tenant, Integer>{
 
-	public Optional<Tenant> findByMobileNo(String mobileNo);
+	public Optional<Tenant> findByMobileNumber(String mobileNumber);
 }
