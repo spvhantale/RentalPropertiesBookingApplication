@@ -16,5 +16,5 @@ public interface TenantService {
 
 	public List<Property> viewProperties() throws TenantException, PropertyException;
 
-	public Tenant rentProperty(Integer propertyId) throws PropertyException, TenantException;
+	public String rentProperty(Integer propertyId) throws PropertyException, TenantException;
 }

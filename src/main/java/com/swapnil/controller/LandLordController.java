@@ -2,14 +2,17 @@ package com.swapnil.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swapnil.DTO.LandLordDTO;
@@ -17,58 +20,63 @@ import com.swapnil.DTO.PropertyDTO;
 import com.swapnil.exception.LandLordException;
 import com.swapnil.exception.PropertyException;
 import com.swapnil.exception.TenantException;
-import com.swapnil.exception.UserSessionException;
 import com.swapnil.model.LandLord;
+import com.swapnil.model.Property;
 import com.swapnil.model.Tenant;
-import com.swapnil.service.LandService;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import com.swapnil.service.LandlordService;
 
 @RestController
-@RequestMapping("/landlord")
+@RequestMapping("/landLord")
 public class LandLordController {
 
-	private LandService landService;
-	
-	public LandLordController(LandService landService) {
-		// TODO Auto-generated constructor stub
-		this.landService=landService;
-	}
-	
+	@Autowired
+	private LandlordService landLordService;
+	@Autowired
+	private PasswordEncoder pEncoder;
+
 	@PostMapping("/register")
-	public ResponseEntity<String> registerLandLord(@RequestBody LandLordDTO landlord) throws LandLordException{
-		String message=landService.registerLandLord(landlord);
-		
-		return new ResponseEntity<String>(message, HttpStatus.CREATED);
+	public ResponseEntity<LandLord> registerLandLord(@RequestBody LandLordDTO landLord) throws LandLordException {
+		landLord.setPassword(pEncoder.encode(landLord.getPassword()));
+
+		LandLord landLordNew = landLordService.registerLandLord(landLord);
+
+		return new ResponseEntity<LandLord>(landLordNew, HttpStatus.CREATED);
+
 	}
-	
+
 	@PutMapping("/update")
-	public ResponseEntity<String> updateLandLord(@RequestBody LandLord landlord,@RequestParam String key) throws LandLordException, UserSessionException{
-		String message=landService.updateLandLord(landlord,key);
-		
-		return new ResponseEntity<String>(message, HttpStatus.CREATED);
+	public ResponseEntity<LandLord> updateLandLord(@RequestBody LandLord landLord) throws LandLordException {
+		landLord.setPassword(pEncoder.encode(landLord.getPassword()));
+
+		LandLord landLordNew = landLordService.updateLandLord(landLord);
+
+		return new ResponseEntity<LandLord>(landLordNew, HttpStatus.ACCEPTED);
+
 	}
+
 	@PutMapping("/addProperty")
-	public ResponseEntity<String> addProperty(@RequestBody PropertyDTO property,@RequestParam String key) throws PropertyException, UserSessionException, LandLordException{
-		
-		String message=landService.addProperty(property, key);
-		
-		return new ResponseEntity<String>(message, HttpStatus.OK);
+	public ResponseEntity<Property> addProperty(@RequestBody PropertyDTO property)
+			throws PropertyException, LandLordException {
+
+		Property propertyNew = landLordService.addProperty(property);
+
+		return new ResponseEntity<Property>(propertyNew, HttpStatus.ACCEPTED);
+
 	}
-	@GetMapping("/view/{tenantId}")
-	public ResponseEntity<Tenant> viewTenant(@PathVariable("tenantId") Integer tenantId,@RequestParam String key) throws PropertyException, UserSessionException, LandLordException, TenantException{
-		
-		Tenant tenant=landService.viewTenant(tenantId, key);
-		
-		return new ResponseEntity<Tenant>(tenant, HttpStatus.OK);
+
+	@GetMapping("/viewTenat/{tenantId}")
+	public ResponseEntity<Tenant> viewTenant(@PathVariable Integer tenantId) throws TenantException, LandLordException {
+
+		Tenant tenant = landLordService.viewTenant(tenantId);
+
+		return new ResponseEntity<Tenant>(tenant, HttpStatus.ACCEPTED);
 	}
-	@GetMapping("/viewAll")
-	public ResponseEntity<List<Tenant>> viewAllTenant(@RequestParam String key) throws PropertyException, UserSessionException, LandLordException, TenantException{
-		
-		List<Tenant> tenantList=landService.viewAllTenant(key);
-		
-		return new ResponseEntity<List<Tenant>>(tenantList, HttpStatus.OK);
+
+	@GetMapping("/viewTenat")
+	public ResponseEntity<List<Tenant>> viewAllTenant() throws TenantException, LandLordException {
+
+		List<Tenant> tenantList = landLordService.viewAllTenant();
+
+		return new ResponseEntity<List<Tenant>>(tenantList, HttpStatus.ACCEPTED);
 	}
-	
-	
 }

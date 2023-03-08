@@ -2,6 +2,9 @@ package com.swapnil.ServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -38,7 +41,7 @@ public class LandlordServiceImpl implements LandlordService {
 			throw new LandLordException("Already register with this number");
 		}
 		LandLord land = new LandLord(landLord.getFirstName(), landLord.getLastName(), landLord.getMobileNumber(),
-				landLord.getAdharNumber(), landLord.getPassword(), "ROLE_" + landLord.getRole().toUpperCase());
+				landLord.getAdharNumber(), landLord.getPassword(), "ROLE_LANDLORD");
 
 		return landLordDao.save(land);
 	}
@@ -51,6 +54,7 @@ public class LandlordServiceImpl implements LandlordService {
 					.orElseThrow(() -> new BadCredentialsException("Wrong details"));
 			LandLord landOld = opt.get();
 			if (land.getLandLordId() == landOld.getLandLordId()) {
+				landLord.setRole("ROLE_LANDLORD");
 				List<Property> propertyList = landLord.getProperties();
 				for (Property p : propertyList) {
 					p.setAvailability(true);
@@ -68,21 +72,34 @@ public class LandlordServiceImpl implements LandlordService {
 
 	@Override
 	public Property addProperty(PropertyDTO property) throws PropertyException, LandLordException {
-		LandLord landlord=landLordDao.findByMobileNumber(auth.getName()).orElseThrow(()-> new LandLordException("Wrong details"));
-		
-		return null;
+		LandLord landLord = landLordDao.findByMobileNumber(auth.getName())
+				.orElseThrow(() -> new LandLordException("Wrong details"));
+
+		Property propertyNew = new Property(property.getCity(), property.getStreetNo(), property.getState(),
+				property.getBedRoom(), property.getHall(), property.getRent(), false, landLord);
+		return propertyDao.save(propertyNew);
+
 	}
 
 	@Override
-	public Tenant viewTenant(Integer tenantId) throws TenantException {
-		// TODO Auto-generated method stub
-		return null;
+	public Tenant viewTenant(Integer tenantId) throws TenantException, LandLordException {
+		LandLord landLord = landLordDao.findByMobileNumber(auth.getName())
+				.orElseThrow(() -> new LandLordException("Wrong details"));
+
+		List<Tenant> tenantList = landLord.getTenants();
+		Stream<Tenant> stream = tenantList.stream().filter(s -> s.getTenatId() == tenantId);
+		Tenant tenant = (Tenant) stream;
+		return tenant;
 	}
 
 	@Override
 	public List<Tenant> viewAllTenant() throws TenantException, LandLordException {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Tenant> tenantList = landLordDao.getAllTenant(auth.getName());
+		if (tenantList.isEmpty()) {
+			throw new TenantException("Tenant is not present");
+		}
+		return tenantList;
 	}
 
 }

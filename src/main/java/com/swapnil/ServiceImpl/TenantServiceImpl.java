@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.swapnil.DTO.TenantDTO;
 import com.swapnil.exception.PropertyException;
 import com.swapnil.exception.TenantException;
+import com.swapnil.model.LandLord;
 import com.swapnil.model.Property;
 import com.swapnil.model.Tenant;
+import com.swapnil.repository.LandLordDAO;
 import com.swapnil.repository.PropertyDAO;
 import com.swapnil.repository.TenantDAO;
 import com.swapnil.service.TenantService;
@@ -26,6 +28,8 @@ public class TenantServiceImpl implements TenantService {
 	private PropertyDAO propertyDao;
 	@Autowired
 	private Authentication auth;
+	@Autowired
+	private LandLordDAO landLordDao;
 
 	@Override
 	public Tenant registerTenant(TenantDTO tenant) throws TenantException {
@@ -35,7 +39,7 @@ public class TenantServiceImpl implements TenantService {
 			throw new TenantException("Already register with this name");
 		}
 		Tenant tenantOrg = new Tenant(tenant.getFirstName(), tenant.getLastName(), tenant.getMobileNumber(),
-				tenant.getAdharNumber(), tenant.getPassword(), "ROLE_" + tenant.getRole().toUpperCase());
+				tenant.getAdharNumber(), tenant.getPassword(), "ROLE_TENANT");
 
 		return tenantDao.save(tenantOrg);
 	}
@@ -50,7 +54,7 @@ public class TenantServiceImpl implements TenantService {
 			if (tenLog.getTenatId() == opt.get().getTenatId()) {
 				Property property = tenant.getProperty();
 				if (property != null) {
-					tenant.setRole("ROLE_" + tenant.getRole().toUpperCase());
+					tenant.setRole("ROLE_TENANT");
 					property.setTenant(tenant);
 					propertyDao.save(property);
 					return tenantDao.save(tenant);
@@ -78,7 +82,7 @@ public class TenantServiceImpl implements TenantService {
 	}
 
 	@Override
-	public Tenant rentProperty(Integer propertyId) throws PropertyException, TenantException {
+	public String rentProperty(Integer propertyId) throws PropertyException, TenantException {
 
 		Tenant tenant = tenantDao.findByMobileNumber(auth.getName())
 				.orElseThrow(() -> new BadCredentialsException("Wrong user"));
@@ -88,13 +92,25 @@ public class TenantServiceImpl implements TenantService {
 
 		if (newProperty.isAvailability()) {
 			Property oldProperty = tenant.getProperty();
+			LandLord oldLandLord = oldProperty.getLandlord();
+			List<Tenant> oldTenant = oldLandLord.getTenants();
+			for (Tenant t : oldTenant) {
+				if (t.getTenatId() == tenant.getTenatId()) {
+					oldTenant.remove(t);
+				}
+			}
+			landLordDao.save(oldLandLord);
 			oldProperty.setAvailability(true);
 			oldProperty.setTenant(null);
 			propertyDao.save(oldProperty);
+			LandLord newLandLord = newProperty.getLandlord();
+			List<Tenant> newTenantList = newLandLord.getTenants();
+			newTenantList.add(tenant);
+			landLordDao.save(newLandLord);
 			newProperty.setAvailability(false);
 			newProperty.setTenant(tenant);
 			propertyDao.save(newProperty);
-			return tenantDao.save(tenant);
+			return "Property Added successfully";
 
 		} else {
 			throw new PropertyException("Already user rent this property");

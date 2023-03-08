@@ -19,7 +19,7 @@ public interface LandlordService {
 
 	public Property addProperty(PropertyDTO property) throws PropertyException, LandLordException;
 
-	public Tenant viewTenant(Integer tenantId) throws TenantException;
+	public Tenant viewTenant(Integer tenantId) throws TenantException,LandLordException;
 
 	public List<Tenant> viewAllTenant() throws TenantException, LandLordException;
 }
