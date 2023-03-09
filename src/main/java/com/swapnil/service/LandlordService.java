@@ -2,6 +2,8 @@ package com.swapnil.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 import com.swapnil.DTO.LandLordDTO;
 import com.swapnil.DTO.PropertyDTO;
 import com.swapnil.exception.LandLordException;
@@ -17,9 +19,9 @@ public interface LandlordService {
 
 	public LandLord updateLandLord(LandLord landLord) throws LandLordException;
 
-	public Property addProperty(PropertyDTO property) throws PropertyException, LandLordException;
+	public Property addProperty(PropertyDTO property,Authentication auth) throws PropertyException, LandLordException;
 
-	public Tenant viewTenant(Integer tenantId) throws TenantException,LandLordException;
+	public Tenant viewTenant(Integer tenantId,Authentication auth) throws TenantException,LandLordException;
 
-	public List<Tenant> viewAllTenant() throws TenantException, LandLordException;
+	public List<Tenant> viewAllTenant(Authentication auth) throws TenantException, LandLordException;
 }

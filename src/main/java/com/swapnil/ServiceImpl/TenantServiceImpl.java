@@ -26,8 +26,7 @@ public class TenantServiceImpl implements TenantService {
 	private TenantDAO tenantDao;
 	@Autowired
 	private PropertyDAO propertyDao;
-	@Autowired
-	private Authentication auth;
+	
 	@Autowired
 	private LandLordDAO landLordDao;
 
@@ -45,7 +44,7 @@ public class TenantServiceImpl implements TenantService {
 	}
 
 	@Override
-	public Tenant updateTenant(Tenant tenant) throws TenantException {
+	public Tenant updateTenant(Tenant tenant,Authentication auth) throws TenantException {
 
 		Optional<Tenant> opt = tenantDao.findByMobileNumber(tenant.getMobileNumber());
 		if (opt.isPresent()) {
@@ -82,7 +81,7 @@ public class TenantServiceImpl implements TenantService {
 	}
 
 	@Override
-	public String rentProperty(Integer propertyId) throws PropertyException, TenantException {
+	public String rentProperty(Integer propertyId,Authentication auth) throws PropertyException, TenantException {
 
 		Tenant tenant = tenantDao.findByMobileNumber(auth.getName())
 				.orElseThrow(() -> new BadCredentialsException("Wrong user"));

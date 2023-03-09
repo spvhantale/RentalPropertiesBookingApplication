@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,27 +56,27 @@ public class LandLordController {
 	}
 
 	@PutMapping("/addProperty")
-	public ResponseEntity<Property> addProperty(@RequestBody PropertyDTO property)
+	public ResponseEntity<Property> addProperty(@RequestBody PropertyDTO property,Authentication auth)
 			throws PropertyException, LandLordException {
 
-		Property propertyNew = landLordService.addProperty(property);
+		Property propertyNew = landLordService.addProperty(property,auth);
 
 		return new ResponseEntity<Property>(propertyNew, HttpStatus.ACCEPTED);
 
 	}
 
 	@GetMapping("/viewTenat/{tenantId}")
-	public ResponseEntity<Tenant> viewTenant(@PathVariable Integer tenantId) throws TenantException, LandLordException {
+	public ResponseEntity<Tenant> viewTenant(@PathVariable Integer tenantId,Authentication auth) throws TenantException, LandLordException {
 
-		Tenant tenant = landLordService.viewTenant(tenantId);
+		Tenant tenant = landLordService.viewTenant(tenantId,auth);
 
 		return new ResponseEntity<Tenant>(tenant, HttpStatus.ACCEPTED);
 	}
 
 	@GetMapping("/viewTenat")
-	public ResponseEntity<List<Tenant>> viewAllTenant() throws TenantException, LandLordException {
+	public ResponseEntity<List<Tenant>> viewAllTenant(Authentication auth) throws TenantException, LandLordException {
 
-		List<Tenant> tenantList = landLordService.viewAllTenant();
+		List<Tenant> tenantList = landLordService.viewAllTenant(auth);
 
 		return new ResponseEntity<List<Tenant>>(tenantList, HttpStatus.ACCEPTED);
 	}

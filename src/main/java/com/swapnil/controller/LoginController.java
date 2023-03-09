@@ -25,7 +25,6 @@ public class LoginController {
 
 	@PostMapping("/signIn")
 	public ResponseEntity<String> getLoggedInCustomerDetailsHandler(Authentication auth) {
-
 		Optional<Tenant> optTenant = tenantDao.findByMobileNumber(auth.getName());
 		Optional<LandLord> optLand = landLordDao.findByMobileNumber(auth.getName());
 		if (optTenant.isPresent()) {

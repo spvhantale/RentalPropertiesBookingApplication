@@ -2,12 +2,11 @@ package com.swapnil.ServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +29,6 @@ public class LandlordServiceImpl implements LandlordService {
 	private LandLordDAO landLordDao;
 	@Autowired
 	private PropertyDAO propertyDao;
-	@Autowired
-	private Authentication auth;
 
 	@Override
 	public LandLord registerLandLord(LandLordDTO landLord) throws LandLordException {
@@ -50,28 +47,23 @@ public class LandlordServiceImpl implements LandlordService {
 	public LandLord updateLandLord(LandLord landLord) throws LandLordException {
 		Optional<LandLord> opt = landLordDao.findByMobileNumber(landLord.getMobileNumber());
 		if (opt.isPresent()) {
-			LandLord land = landLordDao.findByMobileNumber(auth.getName())
-					.orElseThrow(() -> new BadCredentialsException("Wrong details"));
-			LandLord landOld = opt.get();
-			if (land.getLandLordId() == landOld.getLandLordId()) {
-				landLord.setRole("ROLE_LANDLORD");
-				List<Property> propertyList = landLord.getProperties();
-				for (Property p : propertyList) {
-					p.setAvailability(true);
-					p.setLandlord(landLord);
-					propertyDao.save(p);
-				}
-				return landLordDao.save(landLord);
-			} else {
-				throw new LandLordException("You dont have permission to edit this information");
+
+			landLord.setRole("ROLE_LANDLORD");
+			List<Property> propertyList = landLord.getProperties();
+			for (Property p : propertyList) {
+				p.setAvailability(true);
+				p.setLandlord(landLord);
+				propertyDao.save(p);
 			}
+			return landLordDao.save(landLord);
 		}
+
 		throw new LandLordException("LandLord is not present with this mail");
 
 	}
 
 	@Override
-	public Property addProperty(PropertyDTO property) throws PropertyException, LandLordException {
+	public Property addProperty(PropertyDTO property, Authentication auth) throws PropertyException, LandLordException {
 		LandLord landLord = landLordDao.findByMobileNumber(auth.getName())
 				.orElseThrow(() -> new LandLordException("Wrong details"));
 
@@ -82,7 +74,7 @@ public class LandlordServiceImpl implements LandlordService {
 	}
 
 	@Override
-	public Tenant viewTenant(Integer tenantId) throws TenantException, LandLordException {
+	public Tenant viewTenant(Integer tenantId, Authentication auth) throws TenantException, LandLordException {
 		LandLord landLord = landLordDao.findByMobileNumber(auth.getName())
 				.orElseThrow(() -> new LandLordException("Wrong details"));
 
@@ -93,7 +85,7 @@ public class LandlordServiceImpl implements LandlordService {
 	}
 
 	@Override
-	public List<Tenant> viewAllTenant() throws TenantException, LandLordException {
+	public List<Tenant> viewAllTenant(Authentication auth) throws TenantException, LandLordException {
 
 		List<Tenant> tenantList = landLordDao.getAllTenant(auth.getName());
 		if (tenantList.isEmpty()) {

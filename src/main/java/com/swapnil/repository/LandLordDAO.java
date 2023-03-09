@@ -15,6 +15,6 @@ public interface LandLordDAO extends JpaRepository<LandLord, Integer>{
 
 	public Optional<LandLord> findByMobileNumber(String mobileNumber);
 	
-	@Query("Select l.tenants from LandLord l where l.landlordId=?1")
+	@Query("Select l.tenants from LandLord l where l.mobileNumber=?1")
 	public List<Tenant> getAllTenant(String mobileNumber);
 }

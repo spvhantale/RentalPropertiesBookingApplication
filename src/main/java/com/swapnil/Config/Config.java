@@ -17,7 +17,7 @@ public class Config {
 	public SecurityFilterChain springSecurityConfiguration(HttpSecurity http) throws Exception {
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable()
-				.authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/tenat/register", "/landLord/register")
+				.authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/tenant/register", "/landLord/register")
 				.permitAll().requestMatchers("/tenat/update", "/tenat/rent/{propertyId}", "/tenat/view")
 				.hasAnyRole("TENANT", "LANDLORD")
 				.requestMatchers("/landLord/update", "/landLord/addProperty", "/landLord/viewTenat/{tenantId}",

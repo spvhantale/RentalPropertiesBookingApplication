@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ import com.swapnil.model.Tenant;
 import com.swapnil.service.TenantService;
 
 @RestController
-@RequestMapping("/tenat")
+@RequestMapping("/tenant")
 public class TenantController {
 
 	@Autowired
@@ -41,11 +42,11 @@ public class TenantController {
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<Tenant> updateTenant(@RequestBody Tenant tenant) throws TenantException {
+	public ResponseEntity<Tenant> updateTenant(@RequestBody Tenant tenant,Authentication auth) throws TenantException {
 
 		tenant.setPassword(pEncoder.encode(tenant.getPassword()));
 
-		Tenant tenantNew = tenantService.updateTenant(tenant);
+		Tenant tenantNew = tenantService.updateTenant(tenant,auth);
 
 		return new ResponseEntity<Tenant>(tenantNew, HttpStatus.ACCEPTED);
 
@@ -59,10 +60,10 @@ public class TenantController {
 	}
 
 	@PutMapping("/rent/{propertyId}")
-	public ResponseEntity<String> rentProeprty(@PathVariable("propertyId") Integer propertyId)
+	public ResponseEntity<String> rentProeprty(@PathVariable("propertyId") Integer propertyId,Authentication auth)
 			throws PropertyException, TenantException {
 
-		String message = tenantService.rentProperty(propertyId);
+		String message = tenantService.rentProperty(propertyId,auth);
 
 		return new ResponseEntity<String>(message, HttpStatus.ACCEPTED);
 	}
