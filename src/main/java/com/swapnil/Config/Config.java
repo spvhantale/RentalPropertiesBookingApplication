@@ -18,10 +18,10 @@ public class Config {
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable()
 				.authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/tenant/register", "/landLord/register")
-				.permitAll().requestMatchers("/tenat/update", "/tenat/rent/{propertyId}", "/tenat/view")
+				.permitAll().requestMatchers("/tenant/update", "/tenant/rent/{propertyId}", "/tenant/view","/signIn")
 				.hasAnyRole("TENANT", "LANDLORD")
-				.requestMatchers("/landLord/update", "/landLord/addProperty", "/landLord/viewTenat/{tenantId}",
-						"/landLord/viewTenat")
+				.requestMatchers("/landLord/update", "/landLord/addProperty", "/landLord/viewTenant/{tenantId}",
+						"/landLord/viewTenant")
 				.hasRole("LANDLORD").anyRequest().authenticated().and()
 				.addFilterAfter(new JwtTokenGenratorFilter(), BasicAuthenticationFilter.class)
 				.addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class).formLogin().and()

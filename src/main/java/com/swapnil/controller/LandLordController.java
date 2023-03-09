@@ -65,7 +65,7 @@ public class LandLordController {
 
 	}
 
-	@GetMapping("/viewTenat/{tenantId}")
+	@GetMapping("/viewTenant/{tenantId}")
 	public ResponseEntity<Tenant> viewTenant(@PathVariable Integer tenantId,Authentication auth) throws TenantException, LandLordException {
 
 		Tenant tenant = landLordService.viewTenant(tenantId,auth);
@@ -73,7 +73,7 @@ public class LandLordController {
 		return new ResponseEntity<Tenant>(tenant, HttpStatus.ACCEPTED);
 	}
 
-	@GetMapping("/viewTenat")
+	@GetMapping("/viewTenant")
 	public ResponseEntity<List<Tenant>> viewAllTenant(Authentication auth) throws TenantException, LandLordException {
 
 		List<Tenant> tenantList = landLordService.viewAllTenant(auth);
